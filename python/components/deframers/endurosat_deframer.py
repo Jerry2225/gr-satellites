@@ -43,7 +43,7 @@ class endurosat_deframer(gr.hier_block2, options_block):
         gr.hier_block2.__init__(
             self,
             'endurosat_deframer',
-            gr.io_signature(1, 1, gr.sizeof_float),
+            gr.io_signature(1, 1, gr.sizeof_char),
             gr.io_signature(0, 0, 0))
         options_block.__init__(self, options)
 
@@ -58,7 +58,7 @@ class endurosat_deframer(gr.hier_block2, options_block):
         self.crop = cc11xx_packet_crop(use_crc16=True)
         self.crc = crc16_ccitt_false()
 
-        self.connect(self, self.slicer, self.deframer)
+        self.connect(self, self.deframer)
         self.msg_connect((self.deframer, 'out'), (self.crop, 'in'))
         self.msg_connect((self.crop, 'out'), (self.crc, 'in'))
         self.msg_connect((self.crc, 'ok'), (self, 'out'))
